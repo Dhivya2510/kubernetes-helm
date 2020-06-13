@@ -101,17 +101,17 @@ pipeline {
             parallel {
                 stage('Curl http_code') {
                     steps {
-                        curlRun ("http://${host_ip}", 'http_code')
+                        helm.curlRun ("http://${host_ip}", 'http_code')
                     }
                 }
                 stage('Curl total_time') {
                     steps {
-                        curlRun ("http://${host_ip}", 'total_time')
+                        helm.curlRun ("http://${host_ip}", 'total_time')
                     }
                 }
                 stage('Curl size_download') {
                     steps {
-                        curlRun ("http://${host_ip}", 'size_download')
+                        helm.curlRun ("http://${host_ip}", 'size_download')
                     }
                 }
             }
@@ -138,14 +138,14 @@ pipeline {
                     namespace = 'development'
 
                     echo "Deploying application ${ID} to ${namespace} namespace"
-                    createNamespace (namespace)
+                    helm.createNamespace (namespace)
 
                     // Remove release if exists
-                    helmDelete (namespace, "${ID}")
+                    helm.helmDelete (namespace, "${ID}")
 
                     // Deploy with helm
                     echo "Deploying"
-                    helmInstall(namespace, "${ID}")
+                    helm.helmInstall(namespace, "${ID}")
                 }
             }
         }
@@ -155,17 +155,17 @@ pipeline {
             parallel {
                 stage('Curl http_code') {
                     steps {
-                        curlTest (namespace, 'http_code')
+                        helm.curlTest (namespace, 'http_code')
                     }
                 }
                 stage('Curl total_time') {
                     steps {
-                        curlTest (namespace, 'time_total')
+                        helm.curlTest (namespace, 'time_total')
                     }
                 }
                 stage('Curl size_download') {
                     steps {
-                        curlTest (namespace, 'size_download')
+                        helm.curlTest (namespace, 'size_download')
                     }
                 }
             }
@@ -175,7 +175,7 @@ pipeline {
             steps {
                 script {
                     // Remove release if exists
-                    helmDelete (namespace, "${ID}")
+                    helm.helmDelete (namespace, "${ID}")
                 }
             }
         }
@@ -187,14 +187,14 @@ pipeline {
                     namespace = 'staging'
 
                     echo "Deploying application ${IMAGE_NAME}:${DOCKER_TAG} to ${namespace} namespace"
-                    createNamespace (namespace)
+                    helm.createNamespace (namespace)
 
                     // Remove release if exists
-                    helmDelete (namespace, "${ID}")
+                    helm.helmDelete (namespace, "${ID}")
 
                     // Deploy with helm
                     echo "Deploying"
-                    helmInstall (namespace, "${ID}")
+                    helm.helmInstall (namespace, "${ID}")
                 }
             }
         }
@@ -204,17 +204,17 @@ pipeline {
             parallel {
                 stage('Curl http_code') {
                     steps {
-                        curlTest (namespace, 'http_code')
+                        helm.curlTest (namespace, 'http_code')
                     }
                 }
                 stage('Curl total_time') {
                     steps {
-                        curlTest (namespace, 'time_total')
+                        helm.curlTest (namespace, 'time_total')
                     }
                 }
                 stage('Curl size_download') {
                     steps {
-                        curlTest (namespace, 'size_download')
+                        helm.curlTest (namespace, 'size_download')
                     }
                 }
             }
@@ -224,7 +224,7 @@ pipeline {
             steps {
                 script {
                     // Remove release if exists
-                    helmDelete (namespace, "${ID}")
+                    helm.helmDelete (namespace, "${ID}")
                 }
             }
         }
@@ -265,11 +265,11 @@ pipeline {
                     namespace = 'production'
 
                     echo "Deploying application ${IMAGE_NAME}:${DOCKER_TAG} to ${namespace} namespace"
-                    createNamespace (namespace)
+                    helm.createNamespace (namespace)
 
                     // Deploy with helm
                     echo "Deploying"
-                    helmInstall (namespace, "${ID}")
+                    helm.helmInstall (namespace, "${ID}")
                 }
             }
         }
@@ -283,17 +283,17 @@ pipeline {
             parallel {
                 stage('Curl http_code') {
                     steps {
-                        curlTest (namespace, 'http_code')
+                        helm.curlTest (namespace, 'http_code')
                     }
                 }
                 stage('Curl total_time') {
                     steps {
-                        curlTest (namespace, 'time_total')
+                        helm.curlTest (namespace, 'time_total')
                     }
                 }
                 stage('Curl size_download') {
                     steps {
-                        curlTest (namespace, 'size_download')
+                        helm.curlTest (namespace, 'size_download')
                     }
                 }
             }
